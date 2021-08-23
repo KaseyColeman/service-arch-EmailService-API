@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/tls"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,13 +10,16 @@ import (
 	gomail "gopkg.in/mail.v2"
 )
 
-type Email []Email
+var current Email
 
 func EmailRequest(w http.ResponseWriter, r *http.Request) {
-  params := mux.Vars(req)
-  var email Email
-  _ = json.NewDecoder(req.Body).Decode(&email)
-  email = append(Email, email)
+  var e Email
+
+  err := json.NewDecoder(r.Body).Decode(&e)
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusBadRequest)
+    return
+  }
 
 }
 
@@ -29,19 +33,19 @@ func main() {
   m := gomail.NewMessage()
 
   // Set E-Mail sender
-  m.SetHeader("From", "from@gmail.com")
+  m.SetHeader("From", current.Sender)
 
   // Set E-Mail receivers
-  m.SetHeader("To", "to@example.com")
+  m.SetHeader("To", current.Reciever)
 
   // Set E-Mail subject
-  m.SetHeader("Subject", "Gomail test subject")
+  m.SetHeader("Subject", current.Subject)
 
   // Set E-Mail body. You can set plain text or html with text/html
-  m.SetBody("text/plain", "This is Gomail test body")
+  m.SetBody("text/plain", current.BodyText)
 
   // Settings for SMTP server
-  d := gomail.NewDialer("smtp.gmail.com", 587, "from@gmail.com", "<email_password>")
+  d := gomail.NewDialer("smtp.gmail.com", 587, "from@gmail.com", "qborwrttzdfnvyvu")
 
   // This is only needed when SSL/TLS certificate is not valid on server.
   // In production this should be set to false.
@@ -53,6 +57,6 @@ func main() {
     panic(err)
   }
 
-  return Email
+  // return Email
 }
 
