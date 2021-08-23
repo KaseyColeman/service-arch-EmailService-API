@@ -9,33 +9,23 @@ import (
 	gomail "gopkg.in/mail.v2"
 )
 
-func SendEmail(w http.ResponseWriter, r *http.Request){
-  newEmail := r.Body
+type Email []Email
 
-  n
+func EmailRequest(w http.ResponseWriter, r *http.Request) {
+  params := mux.Vars(req)
+  var email Email
+  _ = json.NewDecoder(req.Body).Decode(&email)
+  email = append(Email, email)
+
 }
 
 func handleRequests(){
-  http.HandleFunc("/", SendEmail)
+  http.HandleFunc("/", EmailRequest)
   log.Fatal(http.ListenAndServe(":10000", nil))
 }
 
 
 func main() {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   m := gomail.NewMessage()
 
   // Set E-Mail sender
@@ -63,6 +53,6 @@ func main() {
     panic(err)
   }
 
-  return
+  return Email
 }
 
