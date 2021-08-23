@@ -1,13 +1,41 @@
 package main
 
 import (
-  "crypto/tls"
-  "fmt"
+	"crypto/tls"
+	"fmt"
+	"log"
+	"net/http"
 
-  gomail "gopkg.in/mail.v2"
+	gomail "gopkg.in/mail.v2"
 )
 
+func SendEmail(w http.ResponseWriter, r *http.Request){
+  newEmail := r.Body
+
+  n
+}
+
+func handleRequests(){
+  http.HandleFunc("/", SendEmail)
+  log.Fatal(http.ListenAndServe(":10000", nil))
+}
+
+
 func main() {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   m := gomail.NewMessage()
 
   // Set E-Mail sender
@@ -37,3 +65,4 @@ func main() {
 
   return
 }
+
