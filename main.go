@@ -10,9 +10,11 @@ import (
 	gomail "gopkg.in/mail.v2"
 )
 
+//this is the current email
 var current Email
 
 func EmailRequest(w http.ResponseWriter, r *http.Request) {
+  //This si suppsoed to get the info from the http request
   var e Email
 
   err := json.NewDecoder(r.Body).Decode(&e)
@@ -24,12 +26,13 @@ func EmailRequest(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleRequests(){
-  http.HandleFunc("/", EmailRequest)
+  http.HandleFunc("/email", EmailRequest)
   log.Fatal(http.ListenAndServe(":10000", nil))
 }
 
 
 func main() {
+  //this method sends the email
   m := gomail.NewMessage()
 
   // Set E-Mail sender
